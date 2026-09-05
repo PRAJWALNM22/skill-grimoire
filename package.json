@@ -1,0 +1,11 @@
+{
+  "name": "skill-grimoire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Skill Grimoire — Production Educational Institution Website",
+  "scripts": {
+    "dev": "npm run dev --prefix proj",
+    "build": "npm run build --prefix proj",
+    "start": "npm run start --prefix proj"
+  }
+}
