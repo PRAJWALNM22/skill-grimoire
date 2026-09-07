@@ -89,10 +89,11 @@ export async function POST(request: NextRequest) {
     });
 
     return await setSessionCookie(response, token);
-  } catch (err) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     console.error("[POST /api/auth/login]", err);
     return NextResponse.json(
-      { error: "Login failed. Please try again." },
+      { error: "Login failed. Please try again.", details: message },
       { status: 500 }
     );
   }

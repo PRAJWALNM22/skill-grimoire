@@ -61,8 +61,12 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "If this email is registered, a verification code has been sent.",
     });
-  } catch (err) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     console.error("[POST /api/auth/forgot-password]", err);
-    return NextResponse.json({ error: "Failed to send reset code." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to send reset code.", details: message },
+      { status: 500 }
+    );
   }
 }
