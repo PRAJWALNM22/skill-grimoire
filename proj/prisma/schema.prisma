@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ── Auth Models ──────────────────────────────────────────────────────────────
+
+model User {
+  id                 String          @id @default(cuid())
+  email              String          @unique
+  username           String          @unique
+  passwordHash       String
+  emailVerified      Boolean         @default(false)
+  mustChangePassword Boolean         @default(false)
+  name               String?
+  role               String          @default("STUDENT") // STUDENT, ADMIN
+  avatarUrl          String?
+  gender             String?
+  bio                String?
+  dateOfBirth        DateTime?
+  studentClass       String?         // e.g. "10A", "12B", "B.Tech-3"
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  enrollments        Enrollment[]
+  certificates       Certificate[]
+  scholarships       Scholarship[]
+  lessonProgress     LessonProgress[]
+  preferences        UserPreference?
+}
+
+/// One-time password tokens for email verification, login, reset, and first-login change
+model OtpToken {
+  id          String   @id @default(cuid())
+  email       String
+  tokenHash   String   // bcrypt hash of the 6-digit OTP
+  type        String   // "SIGNUP" | "LOGIN" | "RESET" | "FIRST_LOGIN"
+  /// JSON blob — stores { username, passwordHash } for pending signup so we don't persist until verified
+  metadata    String?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([email, type])
+}
+
+// ── Domain & Course Models ───────────────────────────────────────────────────
+
+model Domain {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  courses     Course[]
+  createdAt   DateTime @default(now())
+}
+
+model Course {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  subtitle      String?
+  description   String
+  domainId      String
+  domain        Domain       @relation(fields: [domainId], references: [id])
+  level         String       @default("All Levels")
+  targetClass   String       // e.g. "10th", "PU", "College"
+  durationHours Int          @default(20)
+  totalLessons  Int          @default(10)
+  rating        Float        @default(4.9)
+  enrolledCount Int          @default(1200)
+  featured      Boolean      @default(false)
+  badge         String?
+  thumbnailUrl  String?
+  videoIntroUrl String?
+  enrollments   Enrollment[]
+  lessons       Lesson[]
+  lessonProgress LessonProgress[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Lesson {
+  id           String   @id @default(cuid())
+  courseId     String
+  course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  videoUrl     String?
+  thumbnailUrl String?
+  pptUrl       String?
+  duration     Int      @default(0) // duration in seconds
+  order        Int      @default(0)
+  isPublished  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  progress     LessonProgress[]
+}
+
+model Enrollment {
+  id               String    @id @default(cuid())
+  userId           String
+  courseId         String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course           Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progressPercent  Int       @default(0)
+  completedLessons Int       @default(0)
+  status           String    @default("IN_PROGRESS")
+  lastAccessedAt   DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model LessonProgress {
+  id         String   @id @default(cuid())
+  userId     String
+  lessonId   String
+  courseId   String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson     Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, lessonId])
+}
+
+model Certificate {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  courseName      String
+  certificateNo   String   @unique
+  issueDate       DateTime @default(now())
+  verificationUrl String?
+  badgeType       String   @default("ADVANCED_CERTIFICATION")
+  createdAt       DateTime @default(now())
+}
+
+model Scholarship {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   @default("Top Performer Scholarship")
+  awardedFor  String
+  amount      Float?
+  badgeTier   String   @default("GOLD")
+  awardedDate DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
+
+model UserPreference {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme         String  @default("DARK_GOLD")
+  weatherSync   Boolean @default(true)
+  preferredCity String?
+}
+
+model PartnerInquiry {
+  id              String   @id @default(cuid())
+  institutionName String
+  contactPerson   String
+  email           String
+  phone           String?
+  institutionType String
+  message         String?
+  status          String   @default("NEW")
+  createdAt       DateTime @default(now())
+}
+
+model RuralAccessInquiry {
+  id              String   @id @default(cuid())
+  institutionName String
+  institutionType String
+  place           String
+  contactPerson   String
+  email           String
+  phone           String?
+  message         String?
+  status          String   @default("NEW")
+  createdAt       DateTime @default(now())
+}
+
+model StudentInquiry {
+  id              String   @id @default(cuid())
+  name            String
+  studentClass    String
+  email           String
+  phone           String?
+  message         String?
+  status          String   @default("NEW")
+  createdAt       DateTime @default(now())
+}

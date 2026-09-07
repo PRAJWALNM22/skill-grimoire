@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+:root {
+  --bg-dark: #070B12;
+  --bg-card: rgba(12, 18, 30, 0.82);
+  --bg-card-hover: rgba(18, 26, 44, 0.92);
+  --border-gold: rgba(229, 184, 105, 0.28);
+  --border-gold-bright: rgba(243, 199, 124, 0.65);
+  --gold-primary: #E5B869;
+  --gold-light: #F7D794;
+  --gold-dark: #C69234;
+  --text-main: #F3F4F6;
+  --text-muted: #9CA3AF;
+  --text-gold: #E5B869;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global Select & Option styling to prevent browser native white-on-white issues */
+select {
+  color-scheme: dark;
+}
+select option {
+  background-color: #0B1525;
+  color: #FFFFFF;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090e17;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(229, 184, 105, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 184, 105, 0.6);
+}
+
+/* Glassmorphism Cards */
+.sg-card {
+  background: linear-gradient(135deg, rgba(16, 24, 40, 0.12) 0%, rgba(9, 14, 24, 0.08) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 184, 105, 0.25);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15), inset 0 1px 1px 0 rgba(243, 199, 124, 0.08);
+  border-radius: 16px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.sg-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(229, 184, 105, 0.48);
+  box-shadow: 0 12px 35px 0 rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(229, 184, 105, 0.2), inset 0 1px 2px 0 rgba(243, 199, 124, 0.3);
+}
+
+/* Professional Card Hover System */
+.pro-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow, border-color;
+}
+
+.pro-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(229, 184, 105, 0.45) !important;
+  box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5), 0 0 30px 0 rgba(229, 184, 105, 0.15) !important;
+}
+
+/* Subtle Shimmer Sweep Effect */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+.shimmer-on-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-on-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%) rotate(25deg);
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shimmer-on-hover:hover::after {
+  opacity: 1;
+  animation: shimmerSweep 1.5s ease-in-out;
+}
+
+/* Gold Glowing Text */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFF1C5 0%, #E5B869 45%, #C69234 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-button {
+  background: linear-gradient(135deg, #F5D075 0%, #E5B869 50%, #C69234 100%);
+  box-shadow: 0 4px 20px rgba(229, 184, 105, 0.35);
+  transition: all 0.25s ease;
+}
+
+.gold-gradient-button:hover {
+  background: linear-gradient(135deg, #FFF1C5 0%, #F5D075 50%, #D4A043 100%);
+  box-shadow: 0 6px 25px rgba(229, 184, 105, 0.55);
+  transform: translateY(-1px);
+}
+
+/* Gold Outlined Button */
+.gold-outline-button {
+  background: rgba(14, 21, 35, 0.7);
+  border: 1px solid rgba(229, 184, 105, 0.45);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.gold-outline-button:hover {
+  background: rgba(229, 184, 105, 0.15);
+  border-color: #E5B869;
+  box-shadow: 0 0 16px rgba(229, 184, 105, 0.25);
+}
+
+/* AI Hologram Orb Spin */
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinCounterClockwise {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spinClockwise 20s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spinCounterClockwise 15s linear infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.04); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+/* Weather Lightning Flash */
+@keyframes lightningFlash {
+  0%, 94%, 98%, 100% { opacity: 0; }
+  95% { opacity: 0.8; }
+  96% { opacity: 0.2; }
+  97% { opacity: 0.95; }
+}
+
+.animate-lightning {
+  animation: lightningFlash 8s infinite;
+}
+
+/* ── Weather Time Slider Thumb ─────────────────────────── */
+.weather-time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFF1C5 0%, #E5B869 50%, #C69234 100%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(229, 184, 105, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.weather-time-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 20px rgba(229, 184, 105, 0.85), 0 2px 8px rgba(0, 0, 0, 0.5);
+  transform: scale(1.15);
+}
+
+.weather-time-slider::-webkit-slider-thumb:active {
+  transform: scale(1.25);
+}
+
+.weather-time-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFF1C5 0%, #E5B869 50%, #C69234 100%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(229, 184, 105, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Cloud Drift Animation ─────────────────────────────── */
+@keyframes cloudDrift {
+  0% { transform: translateX(-10%); }
+  100% { transform: translateX(110%); }
+}
+
+.animate-cloud-drift {
+  animation: cloudDrift 60s linear infinite;
+}
