@@ -3,12 +3,19 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+let dbUrl = process.env["DATABASE_URL"] || "";
+if (dbUrl.includes("db.xmiocnsesljynkwmpbzb.supabase.co")) {
+  dbUrl = dbUrl
+    .replace("db.xmiocnsesljynkwmpbzb.supabase.co:5432", "aws-0-ap-southeast-1.pooler.supabase.com:6543")
+    .replace("postgres:", "postgres.xmiocnsesljynkwmpbzb:");
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: dbUrl,
   },
 });
