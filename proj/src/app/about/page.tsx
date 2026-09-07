@@ -12,6 +12,27 @@ import ExpertsCarousel from "@/components/about/ExpertsCarousel";
 
 export default function AboutPage() {
   const [showReveal, setShowReveal] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+
+  const handleDismiss = React.useCallback(() => {
+    if (isFadingOut) return;
+    setIsFadingOut(true);
+    setTimeout(() => {
+      setShowReveal(false);
+    }, 600);
+  }, [isFadingOut]);
+
+  React.useEffect(() => {
+    if (!showReveal) return;
+
+    // Safety fallback: if video doesn't end or autoplay fails on mobile, automatically dismiss after 9.5s
+    const timer = setTimeout(() => {
+      handleDismiss();
+    }, 9500);
+
+    return () => clearTimeout(timer);
+  }, [showReveal, handleDismiss]);
 
   return (
     <AuthProvider>
@@ -19,24 +40,38 @@ export default function AboutPage() {
         <WeatherBackground>
           {showReveal && (
             <div
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-black animate-out fade-out duration-1000 fill-mode-forwards"
-              style={{ animationPlayState: showReveal ? "paused" : "running" }}
+              className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-700 ease-out overflow-hidden select-none ${
+                isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
             >
-              <video
-                src="/videos/logo_reveal.mp4"
-                autoPlay
-                muted
-                playsInline
-                onEnded={() => {
-                  setTimeout(() => setShowReveal(false), 200);
-                }}
-                className="w-full h-full object-cover"
-              />
+              {/* Subtle ambient backdrop */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(229,184,105,0.07)_0%,rgba(6,10,20,0.5)_50%,rgba(0,0,0,1)_90%)] pointer-events-none" />
+
+              {/* Mobile-responsive video wrapper */}
+              <div className="relative w-full h-full flex items-center justify-center p-2 sm:p-4 max-w-full max-h-full">
+                <video
+                  ref={videoRef}
+                  src="/videos/logo_reveal.mp4"
+                  autoPlay
+                  muted
+                  playsInline
+                  controls={false}
+                  disablePictureInPicture
+                  preload="auto"
+                  onEnded={handleDismiss}
+                  onError={handleDismiss}
+                  className="w-full h-full max-w-full max-h-full object-contain relative z-10 transition-all duration-300 pointer-events-none"
+                />
+              </div>
+
+              {/* Skip Intro button - responsive sizing and touch friendly */}
               <button
-                onClick={() => setShowReveal(false)}
-                className="absolute top-8 right-8 z-[110] px-6 py-2 bg-black/50 hover:bg-black/80 text-white rounded-full border border-white/20 backdrop-blur-sm transition-all text-sm font-medium"
+                onClick={handleDismiss}
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-[110] px-3.5 py-1.5 sm:px-5 sm:py-2 bg-black/60 hover:bg-black/85 active:scale-95 text-white/90 hover:text-white rounded-full border border-white/20 hover:border-[#E5B869]/50 backdrop-blur-md transition-all text-xs sm:text-sm font-medium flex items-center gap-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] cursor-pointer"
+                aria-label="Skip Intro Video"
               >
-                Skip Intro
+                <span>Skip Intro</span>
+                <span className="text-[#E5B869] text-xs font-bold leading-none">✕</span>
               </button>
             </div>
           )}
