@@ -61,37 +61,37 @@ export default function ProgrammesPage() {
               </section>
 
               {/* ── TIER 01: CLASS 10 ── */}
-              <section className="relative p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-12 group">
+              <section className="relative p-6 sm:p-8 md:p-12 rounded-[28px] sm:rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#E5B869] opacity-[0.03] blur-3xl rounded-full translate-x-1/3 -translate-y-1/3 transition-all duration-700 group-hover:opacity-[0.08]" />
                 
-                <div className="w-32 h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
-                  <Compass className="w-14 h-14 text-[#E5B869]" />
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
+                  <Compass className="w-10 h-10 sm:w-14 sm:h-14 text-[#E5B869]" />
                 </div>
                 
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 w-full space-y-4 text-left">
                   <div className="flex items-end gap-4">
-                    <span className="text-6xl font-serif text-[#E5B869] font-bold leading-none">01</span>
-                    <h2 className="text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Class 10</h2>
+                    <span className="text-5xl sm:text-6xl font-serif text-[#E5B869] font-bold leading-none">01</span>
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Class 10</h2>
                   </div>
                   <div className="w-48 h-px bg-gradient-to-r from-[#E5B869] to-transparent mb-4 relative">
                      <ChevronRight className="w-4 h-4 text-[#E5B869] absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
                   </div>
-                  <p className="text-gray-300 text-lg max-w-md">
+                  <p className="text-gray-300 text-base sm:text-lg max-w-md">
                     Career Guidance & Life Skills for students choosing their next path with clarity.
                   </p>
                   <div className="mt-4 flex items-baseline gap-2">
                     <span className="text-sm text-gray-400 uppercase tracking-wider">MRP</span>
-                    <span className="text-3xl font-bold text-[#E5B869]">₹2,750</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-[#E5B869]">₹2,750</span>
                   </div>
                 </div>
                 
                 {/* Card Image */}
-                <div className="flex-shrink-0 w-64 h-64 md:w-72 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
+                <div className="flex-shrink-0 w-full max-w-[260px] sm:max-w-xs md:w-72 h-60 sm:h-64 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/images/prog_class10.jpg"
                     alt="Class 10 Career Guidance"
                     fill
-                    sizes="(max-width: 768px) 256px, 288px"
+                    sizes="(max-width: 768px) 260px, 288px"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A101C]/60 to-transparent" />
@@ -99,43 +99,43 @@ export default function ProgrammesPage() {
               </section>
 
               {/* ── TIER 02: 11TH & 12TH ── */}
-              <section className="relative p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-12 group">
+              <section className="relative p-6 sm:p-8 md:p-12 rounded-[28px] sm:rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#3B82F6] opacity-[0.03] blur-3xl rounded-full translate-x-1/3 -translate-y-1/3 transition-all duration-700 group-hover:opacity-[0.08]" />
                 
-                <div className="w-32 h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
-                  <Briefcase className="w-14 h-14 text-[#E5B869]" />
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
+                  <Briefcase className="w-10 h-10 sm:w-14 sm:h-14 text-[#E5B869]" />
                 </div>
                 
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 w-full space-y-4 text-left">
                   <div className="flex items-end gap-4">
-                    <span className="text-6xl font-serif text-[#E5B869] font-bold leading-none">02</span>
-                    <h2 className="text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">11th and <br/> 12th Classes</h2>
+                    <span className="text-5xl sm:text-6xl font-serif text-[#E5B869] font-bold leading-none">02</span>
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">11th and <br/> 12th Classes</h2>
                   </div>
                   <div className="w-48 h-px bg-gradient-to-l from-[#E5B869] to-transparent mb-4 relative">
                      <ChevronRight className="w-4 h-4 text-[#E5B869] absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-180" />
                   </div>
-                  <p className="text-gray-300 text-lg max-w-md">
+                  <p className="text-gray-300 text-base sm:text-lg max-w-md">
                     AI Workplace Skills that teach students how to use AI for everyday work tasks.
                   </p>
-                  <div className="mt-4 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-gray-400">11th</span>
-                      <span className="text-2xl font-bold text-[#E5B869]">₹4,125</span>
+                  <div className="mt-4 flex flex-wrap items-baseline gap-x-4 sm:gap-x-6 gap-y-2">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs sm:text-sm text-gray-400">11th</span>
+                      <span className="text-xl sm:text-2xl font-bold text-[#E5B869]">₹4,125</span>
                     </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-gray-400">12th</span>
-                      <span className="text-2xl font-bold text-[#E5B869]">₹5,500</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs sm:text-sm text-gray-400">12th</span>
+                      <span className="text-xl sm:text-2xl font-bold text-[#E5B869]">₹5,500</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Card Image */}
-                <div className="flex-shrink-0 w-64 h-64 md:w-72 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
+                <div className="flex-shrink-0 w-full max-w-[260px] sm:max-w-xs md:w-72 h-60 sm:h-64 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/images/prog_11th12th.jpg"
                     alt="11th and 12th AI Workplace Skills"
                     fill
-                    sizes="(max-width: 768px) 256px, 288px"
+                    sizes="(max-width: 768px) 260px, 288px"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A101C]/60 to-transparent" />
@@ -143,47 +143,47 @@ export default function ProgrammesPage() {
               </section>
 
               {/* ── TIER 03: UNDERGRAD ── */}
-              <section className="relative p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-12 group">
+              <section className="relative p-6 sm:p-8 md:p-12 rounded-[28px] sm:rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12 group">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#E5B869] opacity-[0.03] blur-3xl rounded-full translate-x-1/3 -translate-y-1/3 transition-all duration-700 group-hover:opacity-[0.08]" />
                 
-                <div className="w-32 h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
-                  <Rocket className="w-14 h-14 text-[#E5B869]" />
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
+                  <Rocket className="w-10 h-10 sm:w-14 sm:h-14 text-[#E5B869]" />
                 </div>
                 
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 w-full space-y-4 text-left">
                   <div className="flex items-end gap-4">
-                    <span className="text-6xl font-serif text-[#E5B869] font-bold leading-none">03</span>
-                    <h2 className="text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Undergrad<br/>Courses</h2>
+                    <span className="text-5xl sm:text-6xl font-serif text-[#E5B869] font-bold leading-none">03</span>
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Undergrad<br/>Courses</h2>
                   </div>
                   <div className="w-48 h-px bg-gradient-to-r from-[#E5B869] to-transparent mb-4 relative">
                      <ChevronRight className="w-4 h-4 text-[#E5B869] absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
                   </div>
-                  <p className="text-gray-300 text-lg max-w-md">
+                  <p className="text-gray-300 text-base sm:text-lg max-w-md">
                     AI integrated professional skills across Finance, Marketing and HR.
                   </p>
-                  <div className="mt-4 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-gray-400">UG 1</span>
-                      <span className="text-2xl font-bold text-[#E5B869]">₹6,875</span>
+                  <div className="mt-4 flex flex-wrap items-baseline gap-x-4 sm:gap-x-6 gap-y-2">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs sm:text-sm text-gray-400">UG 1</span>
+                      <span className="text-xl sm:text-2xl font-bold text-[#E5B869]">₹6,875</span>
                     </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-gray-400">UG 2</span>
-                      <span className="text-2xl font-bold text-[#E5B869]">₹8,250</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs sm:text-sm text-gray-400">UG 2</span>
+                      <span className="text-xl sm:text-2xl font-bold text-[#E5B869]">₹8,250</span>
                     </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-gray-400">UG 3</span>
-                      <span className="text-2xl font-bold text-[#E5B869]">₹9,625</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xs sm:text-sm text-gray-400">UG 3</span>
+                      <span className="text-xl sm:text-2xl font-bold text-[#E5B869]">₹9,625</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Card Image */}
-                <div className="flex-shrink-0 w-64 h-64 md:w-72 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
+                <div className="flex-shrink-0 w-full max-w-[260px] sm:max-w-xs md:w-72 h-60 sm:h-64 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/images/prog_undergrad.jpg"
                     alt="Undergrad AI Skills in Finance, Marketing, HR"
                     fill
-                    sizes="(max-width: 768px) 256px, 288px"
+                    sizes="(max-width: 768px) 260px, 288px"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A101C]/60 to-transparent" />
@@ -191,37 +191,37 @@ export default function ProgrammesPage() {
               </section>
 
               {/* ── TIER 04: POST GRAD ── */}
-              <section className="relative p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-12 group mb-20">
+              <section className="relative p-6 sm:p-8 md:p-12 rounded-[28px] sm:rounded-[2rem] bg-gradient-to-br from-[#10192A]/90 to-[#0A101C]/90 border border-[#E5B869]/20 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12 group mb-20">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#A855F7] opacity-[0.03] blur-3xl rounded-full translate-x-1/3 -translate-y-1/3 transition-all duration-700 group-hover:opacity-[0.08]" />
                 
-                <div className="w-32 h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
-                  <GraduationCap className="w-14 h-14 text-[#E5B869]" />
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-[#E5B869] flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(229,184,105,0.3)]">
+                  <GraduationCap className="w-10 h-10 sm:w-14 sm:h-14 text-[#E5B869]" />
                 </div>
                 
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 w-full space-y-4 text-left">
                   <div className="flex items-end gap-4">
-                    <span className="text-6xl font-serif text-[#E5B869] font-bold leading-none">04</span>
-                    <h2 className="text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Post Grad<br/>Courses</h2>
+                    <span className="text-5xl sm:text-6xl font-serif text-[#E5B869] font-bold leading-none">04</span>
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white uppercase tracking-widest pb-1">Post Grad<br/>Courses</h2>
                   </div>
                   <div className="w-48 h-px bg-gradient-to-l from-[#E5B869] to-transparent mb-4 relative">
                      <ChevronRight className="w-4 h-4 text-[#E5B869] absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-180" />
                   </div>
-                  <p className="text-gray-300 text-lg max-w-md">
+                  <p className="text-gray-300 text-base sm:text-lg max-w-md">
                     Advanced AI-powered professional development for post-graduate students preparing for leadership roles.
                   </p>
                   <div className="mt-4 flex items-baseline gap-2">
                     <span className="text-sm text-gray-400">PG 1 & 2</span>
-                    <span className="text-3xl font-bold text-[#E5B869]">₹9,625</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-[#E5B869]">₹9,625</span>
                   </div>
                 </div>
                 
                 {/* Card Image */}
-                <div className="flex-shrink-0 w-64 h-64 md:w-72 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
+                <div className="flex-shrink-0 w-full max-w-[260px] sm:max-w-xs md:w-72 h-60 sm:h-64 md:h-72 relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/images/prog_postgrad.jpg"
                     alt="Post Graduate Advanced Learning"
                     fill
-                    sizes="(max-width: 768px) 256px, 288px"
+                    sizes="(max-width: 768px) 260px, 288px"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A101C]/60 to-transparent" />

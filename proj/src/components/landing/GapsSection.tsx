@@ -13,8 +13,8 @@ export default function GapsSection() {
   const [card2Visible, setCard2Visible] = useState(false);
   const [card3Visible, setCard3Visible] = useState(false);
 
-  const [syllabusOpen, setSyllabusOpen] = useState(true);
-  const [jobNeedsOpen, setJobNeedsOpen] = useState(true);
+  const [syllabusOpen, setSyllabusOpen] = useState(false);
+  const [jobNeedsOpen, setJobNeedsOpen] = useState(false);
 
   useEffect(() => {
     const observerCallback = (
@@ -104,13 +104,14 @@ export default function GapsSection() {
         </div>
 
         {/* Image Content */}
-        <div className="flex-1 relative w-full aspect-square sm:aspect-[4/3] lg:aspect-auto lg:min-h-0 min-h-[280px] rounded-3xl overflow-hidden shadow-lg z-10 border border-[#E5B869]/25 group-hover:border-[#E5B869]/45 transition-colors duration-500 bg-[#060c18]">
+        <div className="flex-1 relative w-full h-[320px] sm:h-[380px] lg:h-auto lg:min-h-full rounded-3xl overflow-hidden shadow-lg z-10 border border-[#E5B869]/25 group-hover:border-[#E5B869]/45 transition-colors duration-500">
           <Image
             src="/images/gaps_crossroads.jpg"
             alt="Student at crossroads"
             fill
-            className="object-contain sm:object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             sizes="(max-width: 768px) 100vw, 50vw"
+            priority
           />
         </div>
       </div>
