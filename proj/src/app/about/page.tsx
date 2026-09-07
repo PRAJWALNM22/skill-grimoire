@@ -9,7 +9,6 @@ import { Quote, Sparkles, Building2, BookOpen, Presentation, CheckCircle2, Arrow
 import Image from "next/image";
 import Link from "next/link";
 import ExpertsCarousel from "@/components/about/ExpertsCarousel";
-import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 export default function AboutPage() {
   const [showReveal, setShowReveal] = useState(true);
@@ -87,14 +86,14 @@ export default function AboutPage() {
                     </div>
                   </div>
 
-                  {/* Outer Square Box with Edge-to-Edge Logo */}
+                  {/* Brand Visual Square Box */}
                   <div className="flex-1 w-full lg:w-auto flex justify-center lg:justify-end z-10">
-                    <div className="relative w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] aspect-square rounded-[2.5rem] sm:rounded-[3rem] border border-[#E5B869]/35 bg-[#0B1220] shadow-[0_0_50px_rgba(229,184,105,0.25)] overflow-hidden group">
+                    <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 aspect-square border border-[#E5B869]/35 bg-[#0B1220] rounded-[2.5rem] sm:rounded-[3rem] shadow-[0_0_50px_rgba(229,184,105,0.2)] overflow-hidden group">
                       <Image
-                        src="/images/logo_emblem.jpg"
+                        src="/logo.png"
                         alt="Skill Grimoire Logo"
                         fill
-                        className="object-cover rounded-[2.5rem] sm:rounded-[3rem] transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover rounded-[2.5rem] sm:rounded-[3rem] group-hover:scale-105 transition-transform duration-500"
                         priority
                       />
                     </div>
@@ -192,9 +191,6 @@ export default function AboutPage() {
 
             </main>
           </div>
-
-          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
-          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>

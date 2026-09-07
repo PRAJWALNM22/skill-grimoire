@@ -3,6 +3,7 @@
 import React from "react";
 import { useWeather } from "@/context/WeatherContext";
 import WeatherCanvas from "./WeatherCanvas";
+import WeatherStatusBar from "./WeatherStatusBar";
 
 type BgTheme = {
   gradient: string;
@@ -178,6 +179,9 @@ export default function WeatherBackground({ children }: { children: React.ReactN
 
       {/* Main Content */}
       <div className="relative z-10">{children}</div>
+
+      {/* Interactive Weather Controller (Site-wide) */}
+      <WeatherStatusBar />
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function MobileHeroCarousel({ onOpenVideo }: MobileHeroCarouselPr
           <div className="flex items-center gap-2.5">
             <div className="relative w-8 h-8 rounded-lg overflow-hidden shadow-md border border-[#E5B869]/30">
               <Image
-                src="/logo.png"
+                src="/images/sg_nav_logo.png"
                 alt="Skill Grimoire"
                 fill
                 className="object-cover"

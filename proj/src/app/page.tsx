@@ -12,7 +12,6 @@ import BenefitsSection from "@/components/landing/BenefitsSection";
 import PartnerFinaleSection from "@/components/landing/PartnerFinaleSection";
 import StudentDashboard from "@/components/dashboard/StudentDashboard";
 import { verifyJwt, SESSION_COOKIE } from "@/lib/auth";
-import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 export default async function HomePage() {
   const cookieStore = await cookies();
@@ -49,9 +48,6 @@ export default async function HomePage() {
               </div>
             )}
           </main>
-
-          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
-          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>

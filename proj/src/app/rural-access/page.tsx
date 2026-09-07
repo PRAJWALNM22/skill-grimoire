@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import { WeatherProvider } from "@/context/WeatherContext";
 import WeatherBackground from "@/components/weather/WeatherBackground";
-import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 import { AuthProvider } from "@/context/AuthContext";
 import RuralAccessSection from "@/components/landing/RuralAccessSection";
 
@@ -17,9 +16,6 @@ export default function RuralAccessPage() {
                <RuralAccessSection />
             </main>
           </div>
-
-          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
-          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>

@@ -17,7 +17,6 @@ import {
 import { WeatherProvider } from "@/context/WeatherContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import WeatherBackground from "@/components/weather/WeatherBackground";
-import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -582,7 +581,6 @@ function AuthCard() {
 function StudentLoginPage() {
   return (
     <WeatherBackground>
-      <WeatherStatusBar />
       <div className="min-h-screen flex items-center justify-center px-4 py-16 relative z-10">
         <div className="w-full max-w-sm">
           {/* Brand */}

@@ -8,7 +8,6 @@ import { WeatherProvider } from "@/context/WeatherContext";
 import WeatherBackground from "@/components/weather/WeatherBackground";
 import { AuthProvider } from "@/context/AuthContext";
 import StudentModal from "@/components/landing/StudentModal";
-import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 export default function ProgrammesPage() {
   const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
@@ -233,9 +232,6 @@ export default function ProgrammesPage() {
             
             <StudentModal isOpen={isStudentModalOpen} onClose={() => setIsStudentModalOpen(false)} />
           </div>
-
-          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
-          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>
