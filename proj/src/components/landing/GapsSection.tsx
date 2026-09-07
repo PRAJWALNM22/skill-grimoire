@@ -13,6 +13,9 @@ export default function GapsSection() {
   const [card2Visible, setCard2Visible] = useState(false);
   const [card3Visible, setCard3Visible] = useState(false);
 
+  const [syllabusOpen, setSyllabusOpen] = useState(true);
+  const [jobNeedsOpen, setJobNeedsOpen] = useState(true);
+
   useEffect(() => {
     const observerCallback = (
       entries: IntersectionObserverEntry[],
@@ -101,12 +104,13 @@ export default function GapsSection() {
         </div>
 
         {/* Image Content */}
-        <div className="flex-1 relative min-h-[350px] lg:min-h-0 rounded-3xl overflow-hidden shadow-lg z-10 border border-[#E5B869]/25 group-hover:border-[#E5B869]/45 transition-colors duration-500">
+        <div className="flex-1 relative w-full aspect-square sm:aspect-[4/3] lg:aspect-auto lg:min-h-0 min-h-[280px] rounded-3xl overflow-hidden shadow-lg z-10 border border-[#E5B869]/25 group-hover:border-[#E5B869]/45 transition-colors duration-500 bg-[#060c18]">
           <Image
             src="/images/gaps_crossroads.jpg"
             alt="Student at crossroads"
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="object-contain sm:object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
@@ -162,20 +166,74 @@ export default function GapsSection() {
           </p>
 
           <div className="flex flex-col gap-3 mt-auto">
-            <div className="flex items-center justify-between p-4 rounded-2xl bg-[#10192A]/50 border border-[#E5B869]/25 hover:border-[#E5B869]/40 hover:bg-[#10192A]/80 transition-all duration-300 cursor-pointer group/opt">
-              <div className="flex items-center gap-3">
-                <BookOpen className="w-5 h-5 text-[#E5B869]" />
-                <span className="font-semibold text-gray-200 text-sm">What the syllabus teaches</span>
-              </div>
-              <div className="text-xl text-[#E5B869] group-hover/opt:rotate-90 group-hover/opt:scale-125 transition-transform duration-300">+</div>
+            {/* Question 1: What the syllabus teaches */}
+            <div className="rounded-2xl bg-[#10192A]/50 border border-[#E5B869]/25 hover:border-[#E5B869]/45 transition-all duration-300 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setSyllabusOpen(!syllabusOpen)}
+                className="w-full flex items-center justify-between p-4 cursor-pointer text-left group/opt"
+              >
+                <div className="flex items-center gap-3">
+                  <BookOpen className="w-5 h-5 text-[#E5B869] shrink-0" />
+                  <span className="font-semibold text-gray-200 text-sm sm:text-base">What the syllabus teaches</span>
+                </div>
+                <div className={`text-xl font-bold text-[#E5B869] transition-transform duration-300 ${syllabusOpen ? "rotate-45" : ""}`}>
+                  +
+                </div>
+              </button>
+
+              {syllabusOpen && (
+                <div className="px-4 pb-4 pt-1 border-t border-[#E5B869]/15 flex flex-col gap-2.5">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {["Theory", "Definitions", "Concepts", "Exams", "Marks"].map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-200"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Heavy emphasis on memorizing formulas, textbook definitions, and clearing semester exams — without exposure to actual workplace projects or industry tools.
+                  </p>
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-2xl bg-[#10192A]/50 border border-[#E5B869]/25 hover:border-[#E5B869]/40 hover:bg-[#10192A]/80 transition-all duration-300 cursor-pointer group/opt">
-              <div className="flex items-center gap-3">
-                <Briefcase className="w-5 h-5 text-[#E5B869]" />
-                <span className="font-semibold text-gray-200 text-sm">What the job actually needs</span>
-              </div>
-              <div className="text-xl text-[#E5B869] group-hover/opt:rotate-90 group-hover/opt:scale-125 transition-transform duration-300">+</div>
+            {/* Question 2: What the job actually needs */}
+            <div className="rounded-2xl bg-[#10192A]/50 border border-[#E5B869]/25 hover:border-[#E5B869]/45 transition-all duration-300 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setJobNeedsOpen(!jobNeedsOpen)}
+                className="w-full flex items-center justify-between p-4 cursor-pointer text-left group/opt"
+              >
+                <div className="flex items-center gap-3">
+                  <Briefcase className="w-5 h-5 text-[#E5B869] shrink-0" />
+                  <span className="font-semibold text-gray-200 text-sm sm:text-base">What the job actually needs</span>
+                </div>
+                <div className={`text-xl font-bold text-[#E5B869] transition-transform duration-300 ${jobNeedsOpen ? "rotate-45" : ""}`}>
+                  +
+                </div>
+              </button>
+
+              {jobNeedsOpen && (
+                <div className="px-4 pb-4 pt-1 border-t border-[#E5B869]/15 flex flex-col gap-2.5">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {["Practical Skills", "Real Work", "Modern Tools", "Problem Solving", "Business Impact"].map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Practical problem-solving, hands-on mastery of industry AI software, real-world case delivery, and the cross-functional collaboration employers demand.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -13,7 +13,7 @@ export default function SkillProgressCard() {
   const domains = ["Finance", "Marketing", "HR", "AI Tools"];
 
   return (
-    <div className="sg-card p-4 w-full h-full flex flex-col group hover:border-[#E5B869]/60 transition-all duration-300">
+    <div className="sg-card p-4 w-full min-h-[250px] flex flex-col justify-between group hover:border-[#E5B869]/60 transition-all duration-300">
       {/* Header */}
       <div className="flex items-center justify-between pb-2 border-b border-[#E5B869]/15">
         <div className="flex items-center gap-1.5">

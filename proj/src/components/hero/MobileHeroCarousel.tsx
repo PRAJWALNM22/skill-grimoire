@@ -118,11 +118,11 @@ export default function MobileHeroCarousel({ onOpenVideo }: MobileHeroCarouselPr
           </span>
         </div>
 
-        <div className="relative z-10 space-y-4">
-          <div className="h-[210px]">
+        <div className="relative z-10 flex flex-col gap-5">
+          <div className="w-full">
             <TopCoursesCard />
           </div>
-          <div className="h-[210px]">
+          <div className="w-full">
             <SkillProgressCard />
           </div>
 
@@ -162,20 +162,20 @@ export default function MobileHeroCarousel({ onOpenVideo }: MobileHeroCarouselPr
           </span>
         </div>
 
-        <div className="relative z-10 space-y-3.5">
-          <div className="h-[195px]">
+        <div className="relative z-10 flex flex-col gap-4">
+          <div className="w-full">
             <CertificateCard />
           </div>
-          <div>
+          <div className="w-full">
             <ScholarshipCard />
           </div>
-          <div className="h-[210px]">
+          <div className="w-full">
             <CareerGrowthCard />
           </div>
-          <div className="h-[220px]">
+          <div className="w-full">
             <GlobalCommunityCard />
           </div>
-          <div>
+          <div className="w-full">
             <PortalCard />
           </div>
         </div>
