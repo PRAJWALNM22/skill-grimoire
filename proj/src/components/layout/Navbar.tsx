@@ -60,9 +60,9 @@ export default function Navbar() {
 
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(229,184,105,0.4)] group-hover:scale-105 transition-transform duration-300">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(229,184,105,0.4)] border border-[#E5B869]/30 group-hover:scale-105 transition-transform duration-300">
             <Image
-              src="/logo.png"
+              src="/images/logo_emblem.jpg"
               alt="Skill Grimoire Logo"
               fill
               className="object-cover"

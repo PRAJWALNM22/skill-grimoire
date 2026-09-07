@@ -15,6 +15,7 @@ import {
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { WeatherProvider } from "@/context/WeatherContext";
 import WeatherBackground from "@/components/weather/WeatherBackground";
+import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 // ── OTP Input ─────────────────────────────────────────────────────────────────
 
@@ -406,6 +407,8 @@ export default function ChangePasswordPage() {
       <WeatherProvider>
         <WeatherBackground>
           <ChangePasswordContent />
+          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
+          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>

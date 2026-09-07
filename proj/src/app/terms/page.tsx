@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import { AuthProvider } from "@/context/AuthContext";
 import { WeatherProvider } from "@/context/WeatherContext";
 import WeatherBackground from "@/components/weather/WeatherBackground";
+import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 export default function TermsConditionsPage() {
   return (
@@ -162,6 +163,9 @@ export default function TermsConditionsPage() {
         </div>
       </main>
           </div>
+
+          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
+          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>

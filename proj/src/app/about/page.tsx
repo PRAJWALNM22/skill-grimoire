@@ -9,6 +9,7 @@ import { Quote, Sparkles, Building2, BookOpen, Presentation, CheckCircle2, Arrow
 import Image from "next/image";
 import Link from "next/link";
 import ExpertsCarousel from "@/components/about/ExpertsCarousel";
+import WeatherStatusBar from "@/components/weather/WeatherStatusBar";
 
 export default function AboutPage() {
   const [showReveal, setShowReveal] = useState(true);
@@ -86,29 +87,16 @@ export default function AboutPage() {
                     </div>
                   </div>
 
-                  {/* Visual Architecture Bridge Graphic */}
+                  {/* Outer Square Box with Edge-to-Edge Logo */}
                   <div className="flex-1 w-full lg:w-auto flex justify-center lg:justify-end z-10">
-                    <div className="relative w-full max-w-[420px] h-[300px] border border-[#E5B869]/25 bg-[#10192A]/40 rounded-[3rem] backdrop-blur-md shadow-[0_0_50px_rgba(229,184,105,0.12)] flex flex-col items-center justify-center overflow-hidden group">
-                      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent" />
-                      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#E5B869] via-transparent to-transparent" />
-
-                      <Building2 className="w-24 h-24 text-gray-600/40 absolute bottom-12 left-10 group-hover:scale-105 transition-transform duration-500" />
-                      <Building2 className="w-32 h-32 text-gray-600/40 absolute bottom-4 right-12 group-hover:scale-105 transition-transform duration-500" />
-
-                      {/* Stylized bridge arc */}
-                      <div className="absolute bottom-8 w-full h-32 border-t-[8px] border-double border-[#E5B869]/80 rounded-[100%] shadow-[0_-10px_30px_rgba(229,184,105,0.4)]" />
-
-                      <div className="relative z-10 flex flex-col items-center justify-center p-4">
-                        <div className="relative w-28 h-28 sm:w-32 sm:h-32 drop-shadow-[0_0_25px_rgba(229,184,105,0.45)] group-hover:scale-105 transition-transform duration-500">
-                          <Image
-                            src="/logo.png"
-                            alt="Skill Grimoire Logo"
-                            fill
-                            className="object-contain"
-                            priority
-                          />
-                        </div>
-                      </div>
+                    <div className="relative w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] aspect-square rounded-[2.5rem] sm:rounded-[3rem] border border-[#E5B869]/35 bg-[#0B1220] shadow-[0_0_50px_rgba(229,184,105,0.25)] overflow-hidden group">
+                      <Image
+                        src="/images/logo_emblem.jpg"
+                        alt="Skill Grimoire Logo"
+                        fill
+                        className="object-cover rounded-[2.5rem] sm:rounded-[3rem] transition-transform duration-500 group-hover:scale-105"
+                        priority
+                      />
                     </div>
                   </div>
 
@@ -204,6 +192,9 @@ export default function AboutPage() {
 
             </main>
           </div>
+
+          {/* Dynamic Weather & Atmosphere Floating Status Bar */}
+          <WeatherStatusBar />
         </WeatherBackground>
       </WeatherProvider>
     </AuthProvider>
