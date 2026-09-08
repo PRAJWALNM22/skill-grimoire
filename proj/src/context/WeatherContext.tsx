@@ -20,19 +20,19 @@ interface WeatherContextType {
 }
 
 const defaultWeather: WeatherDataResponse = {
-  city: "Bangalore",
+  city: "Detecting...",
   country: "India",
   temp: 24,
-  feelsLike: 25,
-  condition: "thunderstorm",
-  conditionLabel: "Partly Cloudy & Stormy",
-  wmoCode: 95,
-  isDay: false,
-  timeOfDay: "evening",
-  humidity: 65,
-  windSpeed: 14,
-  localTime: "07:25 PM",
-  formattedDate: "May 20, 2025",
+  feelsLike: 24,
+  condition: "cloudy",
+  conditionLabel: "Detecting Location...",
+  wmoCode: 1,
+  isDay: true,
+  timeOfDay: "afternoon",
+  humidity: 60,
+  windSpeed: 10,
+  localTime: "12:00 PM",
+  formattedDate: "",
   source: "fallback",
 };
 
@@ -105,7 +105,15 @@ function deriveConditionFromHour(hour: number, currentCondition: WeatherConditio
 }
 
 export function WeatherProvider({ children }: { children: React.ReactNode }) {
-  const [weather, setWeather] = useState<WeatherDataResponse>(defaultWeather);
+  const [weather, setWeather] = useState<WeatherDataResponse>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("sg_weather_cache");
+        if (cached) return JSON.parse(cached);
+      } catch (_) {}
+    }
+    return defaultWeather;
+  });
   const [isLive, setIsLive] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(null);
@@ -138,6 +146,11 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const data: WeatherDataResponse = await res.json();
         setWeather(data);
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem("sg_weather_cache", JSON.stringify(data));
+          } catch (_) {}
+        }
       }
     } catch (err) {
       console.error("Failed to load weather:", err);
@@ -146,23 +159,41 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // On mount: Try browser geolocation
+  // On mount: Fetch live weather immediately using cached coords or IP, and request GPS
   useEffect(() => {
+    let cachedCoords: { lat: number; lon: number } | null = null;
+    if (typeof window !== "undefined") {
+      try {
+        const c = localStorage.getItem("sg_coords");
+        if (c) cachedCoords = JSON.parse(c);
+      } catch (_) {}
+    }
+
+    if (cachedCoords) {
+      setCoords(cachedCoords);
+      fetchWeatherData(cachedCoords.lat, cachedCoords.lon);
+    } else {
+      // Immediately fetch IP-based weather so user sees their actual location without delay
+      fetchWeatherData();
+    }
+
+    // Also request high-precision GPS geolocation from browser to refine location
     if (typeof window !== "undefined" && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCoords({ lat: latitude, lon: longitude });
+          const newCoords = { lat: latitude, lon: longitude };
+          setCoords(newCoords);
+          try {
+            localStorage.setItem("sg_coords", JSON.stringify(newCoords));
+          } catch (_) {}
           fetchWeatherData(latitude, longitude);
         },
         (err) => {
-          console.warn("Geolocation denied or unavailable, using IP / default:", err.message);
-          fetchWeatherData();
+          console.warn("GPS geolocation prompt dismissed or denied:", err.message);
         },
-        { timeout: 8000 }
+        { timeout: 10000, maximumAge: 300000, enableHighAccuracy: false }
       );
-    } else {
-      fetchWeatherData();
     }
   }, [fetchWeatherData]);
 

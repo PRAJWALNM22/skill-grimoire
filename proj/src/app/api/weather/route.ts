@@ -116,15 +116,81 @@ export async function GET(request: NextRequest) {
 
   let lat = latParam ? parseFloat(latParam) : null;
   let lon = lonParam ? parseFloat(lonParam) : null;
-  let cityName = cityParam || "Bangalore";
+  let cityName = cityParam || "";
   let countryName = "India";
 
-  // Default coordinate if not provided: Bangalore (12.9716, 77.5946)
+  // If coordinates are provided, reverse-geocode them to get the actual city
+  if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
+    if (!cityName) {
+      try {
+        const geoRes = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
+          { signal: AbortSignal.timeout(3500) }
+        );
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          const detectedCity =
+            geoData.city ||
+            geoData.locality ||
+            geoData.principalSubdivision ||
+            geoData.localityInfo?.administrative?.[2]?.name;
+          if (detectedCity) cityName = detectedCity;
+          if (geoData.countryName) countryName = geoData.countryName;
+        }
+      } catch {
+        // Fallback to OpenStreetMap Nominatim reverse geocode
+        try {
+          const nomRes = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+            {
+              headers: { "User-Agent": "SkillGrimoireWeather/1.0" },
+              signal: AbortSignal.timeout(3500),
+            }
+          );
+          if (nomRes.ok) {
+            const nomData = await nomRes.json();
+            const nCity =
+              nomData.address?.city ||
+              nomData.address?.town ||
+              nomData.address?.village ||
+              nomData.address?.county ||
+              nomData.address?.state_district;
+            if (nCity) cityName = nCity;
+            if (nomData.address?.country) countryName = nomData.address.country;
+          }
+        } catch {}
+      }
+    }
+  } else {
+    // If coordinates are not provided, detect user's current location via IP
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const realIp = request.headers.get("x-real-ip");
+    const cfIp = request.headers.get("cf-connecting-ip");
+    const clientIp = (forwardedFor ? forwardedFor.split(",")[0].trim() : null) || realIp || cfIp || "";
+    const isLocalOrPrivate = !clientIp || clientIp === "127.0.0.1" || clientIp === "::1" || clientIp.startsWith("192.168.") || clientIp.startsWith("10.") || clientIp.startsWith("172.");
+
+    try {
+      const ipUrl = isLocalOrPrivate ? "http://ip-api.com/json/" : `http://ip-api.com/json/${clientIp}`;
+      const ipRes = await fetch(ipUrl, { signal: AbortSignal.timeout(3500) });
+      if (ipRes.ok) {
+        const ipData = await ipRes.json();
+        if (ipData.status === "success") {
+          lat = ipData.lat;
+          lon = ipData.lon;
+          if (!cityName) cityName = ipData.city || ipData.regionName || "Your Location";
+          if (ipData.country) countryName = ipData.country;
+        }
+      }
+    } catch {}
+  }
+
+  // Fallback if everything fails
   if (lat === null || lon === null || isNaN(lat) || isNaN(lon)) {
     lat = 12.9716;
     lon = 77.5946;
-    cityName = "Bangalore";
-    countryName = "India";
+  }
+  if (!cityName) {
+    cityName = "Your Location";
   }
 
   try {
