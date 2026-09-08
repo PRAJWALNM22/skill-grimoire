@@ -95,7 +95,7 @@ export default function ProfileSidebar() {
         <p className="text-xs text-gray-400 mb-3">{user?.email}</p>
 
         <span className="bg-[#E5B869]/10 text-[#E5B869] border border-[#E5B869]/30 px-4 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider mb-6">
-          Student
+          Student{user?.studentClass ? ` • ${user.studentClass}` : ""}
         </span>
 
         <div className="w-full flex flex-col gap-3">

@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     // 2. Send Email
     let toEmail = "contact@skillgrimoire.com"; // Fallback
-    if (studentClass === "10th") {
+    if (studentClass === "10th" || studentClass?.startsWith("10th")) {
       toEmail = "school@skillgrimoire.com";
     } else if (studentClass?.startsWith("PU")) {
       toEmail = "pu@skillgrimoire.com";

@@ -74,11 +74,22 @@ export default function LearnTab() {
                     <span className="text-[10px] font-bold tracking-wider uppercase bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 px-2 py-0.5 rounded-full backdrop-blur-sm">
                       {course.domain?.name || "General"}
                     </span>
-                    {course.badge && (
-                      <span className="text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full backdrop-blur-sm">
-                        {course.badge}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                      {course.targetClass && (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm border ${
+                          course.targetClass.includes("FC")
+                            ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                            : "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                        }`}>
+                          {course.targetClass.includes("FC") ? `Free • ${course.targetClass}` : course.targetClass}
+                        </span>
+                      )}
+                      {course.badge && (
+                        <span className="text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                          {course.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
                 

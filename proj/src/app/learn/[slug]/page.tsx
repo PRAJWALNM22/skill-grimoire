@@ -154,7 +154,7 @@ export default function CoursePlayerPage() {
                <h3 className="text-lg font-bold text-[#E5B869] mb-3">About this Course</h3>
                <p className="text-gray-300 text-sm leading-relaxed mb-6">{course.description}</p>
                
-               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm bg-[#0A101C] p-4 rounded-xl border border-white/5">
+               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4 text-sm bg-[#0A101C] p-4 rounded-xl border border-white/5">
                  <div>
                    <span className="block text-gray-500 text-xs mb-1">Level</span>
                    <span className="font-semibold text-white">{course.level}</span>
@@ -171,6 +171,12 @@ export default function CoursePlayerPage() {
                    <span className="block text-gray-500 text-xs mb-1">Enrolled</span>
                    <span className="font-semibold text-white">{course.enrolledCount}</span>
                  </div>
+                 {course.targetClass && (
+                   <div>
+                     <span className="block text-gray-500 text-xs mb-1">Class</span>
+                     <span className="font-semibold text-[#E5B869]">{course.targetClass}</span>
+                   </div>
+                 )}
                </div>
              </div>
           </div>

@@ -213,6 +213,10 @@ function ManualTab({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
               <option value="UG III">UG III</option>
               <option value="PG I">PG I</option>
               <option value="PG II">PG II</option>
+              <option value="10th FC">10th FC</option>
+              <option value="PUC FC">PUC FC</option>
+              <option value="UG FC">UG FC</option>
+              <option value="PG FC">PG FC</option>
             </select>
           </FieldGroup>
           <FieldGroup icon={<User className="w-4 h-4" />} label="Gender" hasValue={!!gender}>
@@ -665,6 +669,10 @@ function EditStudentModal({ student, onClose, onSuccess }: { student: Student; o
                 <option value="UG III">UG III</option>
                 <option value="PG I">PG I</option>
                 <option value="PG II">PG II</option>
+                <option value="10th FC">10th FC</option>
+                <option value="PUC FC">PUC FC</option>
+                <option value="UG FC">UG FC</option>
+                <option value="PG FC">PG FC</option>
               </select>
             </div>
 
@@ -706,7 +714,7 @@ export default function StudentsPage() {
 
   useEffect(() => { fetchStudents(); }, []);
 
-  const filtered = students.filter((s) => [s.name, s.email, s.username].some((v) => v?.toLowerCase().includes(search.toLowerCase())));
+  const filtered = students.filter((s) => [s.name, s.email, s.username, s.studentClass].some((v) => v?.toLowerCase().includes(search.toLowerCase())));
 
   const handleResetPassword = async (student: Student) => {
     if (!confirm(`Reset ${student.name||student.email}s password requirement?`)) return;

@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
         username: true,
         name: true,
         role: true,
+        studentClass: true,
         avatarUrl: true,
         emailVerified: true,
         mustChangePassword: true,

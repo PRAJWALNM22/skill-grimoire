@@ -6,6 +6,7 @@ import { User, Mail, Calendar, BookOpen, GraduationCap, Award, Clock } from "luc
 
 export default function ProfileTab() {
   const { user } = useAuth();
+  const [studentData, setStudentData] = useState<any>(null);
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -15,6 +16,7 @@ export default function ProfileTab() {
         const res = await fetch("/api/courses", { cache: "no-store" });
         const data = await res.json();
         if (data.success && data.student) {
+          setStudentData(data.student);
           setEnrollments(data.student.enrollments || []);
         }
       } catch (err) {
@@ -69,7 +71,9 @@ export default function ProfileTab() {
             </div>
             <div>
               <p className="text-[10px] text-gray-400 uppercase tracking-wide">Current Class / Level</p>
-              <p className="text-sm font-semibold text-white">Sophomore (Undergrad)</p>
+              <p className="text-sm font-semibold text-white">
+                {studentData?.studentClass || user?.studentClass || "Enrolled Student"}
+              </p>
             </div>
           </div>
         </div>

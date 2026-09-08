@@ -133,6 +133,10 @@ export default function StudentModal({ isOpen, onClose }: StudentModalProps) {
                       <option value="UG III">UG III</option>
                       <option value="PG I">PG I</option>
                       <option value="PG II">PG II</option>
+                      <option value="10th FC">10th FC</option>
+                      <option value="PUC FC">PUC FC</option>
+                      <option value="UG FC">UG FC</option>
+                      <option value="PG FC">PG FC</option>
                     </select>
                   </div>
 

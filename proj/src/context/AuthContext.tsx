@@ -14,6 +14,7 @@ export interface AuthUser {
   username: string;
   name: string | null;
   role: string;
+  studentClass?: string | null;
   avatarUrl?: string | null;
   mustChangePassword?: boolean;
 }

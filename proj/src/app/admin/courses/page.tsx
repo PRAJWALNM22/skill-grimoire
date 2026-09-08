@@ -15,6 +15,10 @@ export const ALL_CLASSES = [
   "UG III",
   "PG I",
   "PG II",
+  "10th FC",
+  "PUC FC",
+  "UG FC",
+  "PG FC",
 ] as const;
 
 interface Domain {
@@ -496,7 +500,7 @@ export default function CoursesPage() {
   useEffect(() => { fetchData(); }, []);
 
   const filtered = courses.filter((c) =>
-    [c.title, c.slug, c.domain.name].some((v) => v?.toLowerCase().includes(search.toLowerCase()))
+    [c.title, c.slug, c.domain.name, c.targetClass].some((v) => v?.toLowerCase().includes(search.toLowerCase()))
   );
 
   const handleDelete = async (course: Course) => {
