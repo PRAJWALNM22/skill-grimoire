@@ -119,46 +119,57 @@ export async function GET(request: NextRequest) {
   let cityName = cityParam || "";
   let countryName = "India";
 
-  // If coordinates are provided, reverse-geocode them to get the actual city
+  // If coordinates are provided, reverse-geocode them to get the actual city/village
   if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
     if (!cityName) {
+      // 1. Try OpenStreetMap Nominatim for exact village / town / locality level resolution
       try {
-        const geoRes = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
-          { signal: AbortSignal.timeout(3500) }
+        const nomRes = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+          {
+            headers: { "User-Agent": "SkillGrimoireWeather/1.0" },
+            signal: AbortSignal.timeout(3500),
+          }
         );
-        if (geoRes.ok) {
-          const geoData = await geoRes.json();
-          const detectedCity =
-            geoData.city ||
-            geoData.locality ||
-            geoData.principalSubdivision ||
-            geoData.localityInfo?.administrative?.[2]?.name;
-          if (detectedCity) cityName = detectedCity;
-          if (geoData.countryName) countryName = geoData.countryName;
+        if (nomRes.ok) {
+          const nomData = await nomRes.json();
+          const nCity =
+            nomData.address?.village ||
+            nomData.address?.suburb ||
+            nomData.address?.town ||
+            nomData.address?.city ||
+            nomData.address?.county ||
+            nomData.address?.state_district;
+          if (nCity) cityName = nCity;
+          if (nomData.address?.country) countryName = nomData.address.country;
         }
-      } catch {
-        // Fallback to OpenStreetMap Nominatim reverse geocode
+      } catch {}
+
+      // 2. Fallback to BigDataCloud reverse geocode
+      if (!cityName) {
         try {
-          const nomRes = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
-            {
-              headers: { "User-Agent": "SkillGrimoireWeather/1.0" },
-              signal: AbortSignal.timeout(3500),
-            }
+          const geoRes = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
+            { signal: AbortSignal.timeout(3500) }
           );
-          if (nomRes.ok) {
-            const nomData = await nomRes.json();
-            const nCity =
-              nomData.address?.city ||
-              nomData.address?.town ||
-              nomData.address?.village ||
-              nomData.address?.county ||
-              nomData.address?.state_district;
-            if (nCity) cityName = nCity;
-            if (nomData.address?.country) countryName = nomData.address.country;
+          if (geoRes.ok) {
+            const geoData = await geoRes.json();
+            const detectedCity =
+              geoData.locality ||
+              geoData.city ||
+              geoData.principalSubdivision ||
+              geoData.localityInfo?.administrative?.[2]?.name;
+            if (detectedCity) cityName = detectedCity;
+            if (geoData.countryName) countryName = geoData.countryName;
           }
         } catch {}
+      }
+
+      // Normalize common extended names for cleaner UI display
+      if (cityName) {
+        cityName = cityName
+          .replace(/Yallappa Nayakana Hosakote/i, "Y N Hosakote")
+          .replace(/Y\.?\s*N\.?\s*Hosakote/i, "Y N Hosakote");
       }
     }
   } else {

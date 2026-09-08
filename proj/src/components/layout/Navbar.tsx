@@ -104,7 +104,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1.5 bg-[#121C30]/80 border border-[#E5B869]/20 rounded-full px-3 py-1 text-xs text-gray-300">
             <CloudSun className="w-3.5 h-3.5 text-[#E5B869]" />
             <span className="text-white font-medium">{weather.temp}°C</span>
-            <span className="text-gray-400 text-[11px] truncate max-w-[100px]">{weather.city}</span>
+            <span className="text-gray-400 text-[11px] truncate max-w-[160px]">{weather.city}</span>
           </div>
 
           {/* Auth: Loading skeleton */}
