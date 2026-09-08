@@ -107,15 +107,7 @@ function deriveConditionFromHour(hour: number, currentCondition: WeatherConditio
 }
 
 export function WeatherProvider({ children }: { children: React.ReactNode }) {
-  const [weather, setWeather] = useState<WeatherDataResponse>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const cached = localStorage.getItem("sg_weather_cache");
-        if (cached) return JSON.parse(cached);
-      } catch (_) {}
-    }
-    return defaultWeather;
-  });
+  const [weather, setWeather] = useState<WeatherDataResponse>(defaultWeather);
   const [isLive, setIsLive] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(null);
@@ -221,6 +213,8 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
     let cachedCoords: { lat: number; lon: number } | null = null;
     if (typeof window !== "undefined") {
       try {
+        const cached = localStorage.getItem("sg_weather_cache");
+        if (cached) setWeather(JSON.parse(cached));
         customCity = localStorage.getItem("sg_custom_city");
         const c = localStorage.getItem("sg_coords");
         if (c) cachedCoords = JSON.parse(c);

@@ -221,9 +221,9 @@ export default function WeatherStatusBar() {
             </div>
 
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300">
-              <span className="font-semibold text-white">{weather.temp}°C</span>
+              <span className="font-semibold text-white" suppressHydrationWarning>{weather.temp}°C</span>
               <span className="text-gray-600">•</span>
-              <span className="capitalize text-gray-300 truncate max-w-[140px]">{weather.conditionLabel}</span>
+              <span className="capitalize text-gray-300 truncate max-w-[140px]" suppressHydrationWarning>{weather.conditionLabel}</span>
               <span className="text-gray-600">•</span>
               <button
                 type="button"
@@ -232,7 +232,7 @@ export default function WeatherStatusBar() {
                 title="Click to change location or enter PIN"
               >
                 <MapPin className="w-3 h-3 text-[#E5B869] group-hover:scale-110 transition-transform" />
-                <span className="underline decoration-dotted decoration-gray-500 group-hover:decoration-[#E5B869]">{weather.city}</span>
+                <span className="underline decoration-dotted decoration-gray-500 group-hover:decoration-[#E5B869]" suppressHydrationWarning>{weather.city}</span>
               </button>
             </div>
           </div>
@@ -302,7 +302,7 @@ export default function WeatherStatusBar() {
 
           {/* Current time display */}
           <div className="hidden sm:flex items-center gap-1 bg-[#101827] border border-[#E5B869]/20 rounded-full px-2 py-0.5 shrink-0">
-            <span className="text-[10px] font-bold text-white tabular-nums">
+            <span className="text-[10px] font-bold text-white tabular-nums" suppressHydrationWarning>
               {formatHour(currentHour)}
             </span>
           </div>
