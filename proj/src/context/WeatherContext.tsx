@@ -17,6 +17,8 @@ interface WeatherContextType {
   setManualHour: (hour: number) => void;
   resetToLive: () => void;
   refreshWeather: () => Promise<void>;
+  searchLocation: (query: string) => Promise<boolean>;
+  requestGpsLocation: () => void;
 }
 
 const defaultWeather: WeatherDataResponse = {
@@ -159,25 +161,85 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // On mount: Fetch live weather immediately using cached coords or IP, and request GPS
+  const searchLocation = useCallback(async (query: string): Promise<boolean> => {
+    if (!query || !query.trim()) return false;
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/weather?city=${encodeURIComponent(query.trim())}`);
+      if (res.ok) {
+        const data: WeatherDataResponse = await res.json();
+        if (data && data.city) {
+          setWeather(data);
+          setIsLive(true);
+          setManualHourState(null);
+          if (typeof window !== "undefined") {
+            try {
+              localStorage.setItem("sg_custom_city", query.trim());
+              localStorage.setItem("sg_weather_cache", JSON.stringify(data));
+            } catch (_) {}
+          }
+          return true;
+        }
+      }
+      return false;
+    } catch (err) {
+      console.error("Location search error:", err);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const requestGpsLocation = useCallback(() => {
+    if (typeof window !== "undefined" && "geolocation" in navigator) {
+      setIsLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const newCoords = { lat: latitude, lon: longitude };
+          setCoords(newCoords);
+          if (typeof window !== "undefined") {
+            try {
+              localStorage.removeItem("sg_custom_city");
+              localStorage.setItem("sg_coords", JSON.stringify(newCoords));
+            } catch (_) {}
+          }
+          fetchWeatherData(latitude, longitude);
+        },
+        (err) => {
+          console.warn("GPS Geolocation error:", err.message);
+          setIsLoading(false);
+        },
+        { timeout: 15000, maximumAge: 0, enableHighAccuracy: true }
+      );
+    }
+  }, [fetchWeatherData]);
+
+  // On mount: Fetch live weather prioritizing custom city or GPS
   useEffect(() => {
+    let customCity: string | null = null;
     let cachedCoords: { lat: number; lon: number } | null = null;
     if (typeof window !== "undefined") {
       try {
+        customCity = localStorage.getItem("sg_custom_city");
         const c = localStorage.getItem("sg_coords");
         if (c) cachedCoords = JSON.parse(c);
       } catch (_) {}
+    }
+
+    if (customCity) {
+      searchLocation(customCity);
+      return;
     }
 
     if (cachedCoords) {
       setCoords(cachedCoords);
       fetchWeatherData(cachedCoords.lat, cachedCoords.lon);
     } else {
-      // Immediately fetch IP-based weather so user sees their actual location without delay
       fetchWeatherData();
     }
 
-    // Also request high-precision GPS geolocation from browser to refine location
+    // Attempt high-accuracy GPS
     if (typeof window !== "undefined" && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -192,10 +254,10 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
         (err) => {
           console.warn("GPS geolocation prompt dismissed or denied:", err.message);
         },
-        { timeout: 10000, maximumAge: 300000, enableHighAccuracy: false }
+        { timeout: 15000, maximumAge: 0, enableHighAccuracy: true }
       );
     }
-  }, [fetchWeatherData]);
+  }, [fetchWeatherData, searchLocation]);
 
   // Manual condition switcher
   const setManualCondition = (condition: WeatherConditionType) => {
@@ -263,6 +325,8 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
         setManualHour,
         resetToLive,
         refreshWeather: () => fetchWeatherData(coords?.lat, coords?.lon),
+        searchLocation,
+        requestGpsLocation,
       }}
     >
       {children}

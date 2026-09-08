@@ -119,10 +119,39 @@ export async function GET(request: NextRequest) {
   let cityName = cityParam || "";
   let countryName = "India";
 
-  // If coordinates are provided, reverse-geocode them to get the actual city/village
+  // 1. If city/PIN code query is explicitly provided, geocode it to coordinates
+  if (cityParam && cityParam.trim() !== "") {
+    try {
+      const searchRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityParam.trim())}&countrycodes=in&format=json&limit=1`,
+        {
+          headers: { "User-Agent": "SkillGrimoireWeather/1.0" },
+          signal: AbortSignal.timeout(4000),
+        }
+      );
+      if (searchRes.ok) {
+        const searchData = await searchRes.json();
+        if (searchData && searchData.length > 0) {
+          lat = parseFloat(searchData[0].lat);
+          lon = parseFloat(searchData[0].lon);
+          const parts = searchData[0].display_name.split(",");
+          let clean = parts[0]?.trim() || cityParam.trim();
+          clean = clean
+            .replace(/Yallappa Nayakana Hosakote/i, "Y N Hosakote")
+            .replace(/Y\.?\s*N\.?\s*Hosakote/i, "Y N Hosakote");
+          cityName = clean;
+          countryName = "India";
+        }
+      }
+    } catch (e) {
+      console.warn("City geocode search failed:", e);
+    }
+  }
+
+  // 2. If coordinates are provided (from browser GPS), reverse-geocode them to get the actual city/village
   if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
     if (!cityName) {
-      // 1. Try OpenStreetMap Nominatim for exact village / town / locality level resolution
+      // Try OpenStreetMap Nominatim for exact village / town / locality level resolution
       try {
         const nomRes = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
@@ -145,7 +174,7 @@ export async function GET(request: NextRequest) {
         }
       } catch {}
 
-      // 2. Fallback to BigDataCloud reverse geocode
+      // Fallback to BigDataCloud reverse geocode
       if (!cityName) {
         try {
           const geoRes = await fetch(
