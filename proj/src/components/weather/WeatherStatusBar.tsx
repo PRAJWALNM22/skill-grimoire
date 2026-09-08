@@ -12,11 +12,6 @@ import {
   MapPin,
   SlidersHorizontal,
   ChevronDown,
-  Wind,
-  Search,
-  Navigation,
-  X,
-  Check,
 } from "lucide-react";
 
 // Fallback icon component for Sunset
@@ -56,31 +51,9 @@ export default function WeatherStatusBar() {
     setManualCondition,
     setManualHour,
     resetToLive,
-    searchLocation,
-    requestGpsLocation,
   } = useWeather();
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showLocationModal, setShowLocationModal] = useState(false);
-  const [locationInput, setLocationInput] = useState("");
-  const [locationError, setLocationError] = useState("");
-  const [isLocSearching, setIsLocSearching] = useState(false);
-
-  const handleLocationSubmit = async (e?: React.FormEvent, customVal?: string) => {
-    if (e) e.preventDefault();
-    const query = (customVal || locationInput).trim();
-    if (!query) return;
-    setLocationError("");
-    setIsLocSearching(true);
-    const success = await searchLocation(query);
-    setIsLocSearching(false);
-    if (success) {
-      setShowLocationModal(false);
-      setLocationInput("");
-    } else {
-      setLocationError("Could not find location. Try entering your PIN code (e.g. 572141).");
-    }
-  };
 
   // Map condition → icon
   const conditionIcon = () => {
@@ -183,18 +156,11 @@ export default function WeatherStatusBar() {
                 <span>{label}</span>
               </button>
             ))}
-            <div className="pt-2 border-t border-white/5 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div className="pt-2 border-t border-white/5 flex items-center justify-center w-full text-xs">
               <span className="text-gray-400 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#E5B869]" />
-                Location: <strong className="text-white">{weather.city}</strong>
+                Location: <strong className="text-white" suppressHydrationWarning>{weather.city}</strong>
               </span>
-              <button
-                type="button"
-                onClick={() => setShowLocationModal(true)}
-                className="text-[#E5B869] hover:underline font-semibold text-xs flex items-center gap-1"
-              >
-                Change Location / PIN
-              </button>
             </div>
           </div>
         </div>
@@ -204,10 +170,11 @@ export default function WeatherStatusBar() {
       <div className="bg-[#0c1322]/92 backdrop-blur-xl border border-[#E5B869]/30 rounded-2xl px-4 py-2.5 shadow-[0_10px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(229,184,105,0.12)] flex flex-col gap-2">
 
         {/* Top row: status + info + buttons */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
           {/* Left: status badge + location */}
-          <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1.5 bg-[#101827] border border-[#E5B869]/25 rounded-full px-2.5 py-1">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            {/* Live / Sim Badge */}
+            <div className="flex items-center gap-1.5 bg-[#101827] border border-[#E5B869]/25 rounded-full px-2.5 py-1 shrink-0">
               {conditionIcon()}
               <span className="text-[10px] font-bold text-[#E5B869] uppercase tracking-wider">
                 {isLive ? "LIVE" : "SIM"}
@@ -220,28 +187,28 @@ export default function WeatherStatusBar() {
               )}
             </div>
 
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300">
+            {/* Location display - visible on mobile & desktop directly beside LIVE button */}
+            <div className="flex items-center gap-1 text-gray-300 min-w-0 shrink">
+              <MapPin className="w-3 h-3 text-[#E5B869] shrink-0" />
+              <span className="text-white text-xs font-semibold truncate max-w-[110px] xs:max-w-[140px] sm:max-w-[180px]" suppressHydrationWarning>
+                {weather.city}
+              </span>
+            </div>
+
+            {/* Desktop / tablet additional info */}
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300 shrink-0">
+              <span className="text-gray-600">•</span>
               <span className="font-semibold text-white" suppressHydrationWarning>{weather.temp}°C</span>
               <span className="text-gray-600">•</span>
               <span className="capitalize text-gray-300 truncate max-w-[140px]" suppressHydrationWarning>{weather.conditionLabel}</span>
-              <span className="text-gray-600">•</span>
-              <button
-                type="button"
-                onClick={() => setShowLocationModal(true)}
-                className="flex items-center gap-1 text-gray-300 hover:text-[#E5B869] transition-colors py-0.5 px-1.5 rounded hover:bg-white/5 cursor-pointer group"
-                title="Click to change location or enter PIN"
-              >
-                <MapPin className="w-3 h-3 text-[#E5B869] group-hover:scale-110 transition-transform" />
-                <span className="underline decoration-dotted decoration-gray-500 group-hover:decoration-[#E5B869]" suppressHydrationWarning>{weather.city}</span>
-              </button>
             </div>
           </div>
 
           {/* Right: buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => setIsExpanded(prev => !prev)}
-              className="flex items-center gap-1.5 bg-[#101827] hover:bg-[#192840] text-gray-200 hover:text-white border border-[#E5B869]/30 hover:border-[#E5B869]/60 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-150"
+              className="flex items-center gap-1.5 bg-[#101827] hover:bg-[#192840] text-gray-200 hover:text-white border border-[#E5B869]/30 hover:border-[#E5B869]/60 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-medium transition-all duration-150"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-[#E5B869]" />
               <span className="hidden sm:inline">Atmosphere</span>
@@ -254,10 +221,11 @@ export default function WeatherStatusBar() {
               <button
                 onClick={handleResetToLive}
                 disabled={isLoading}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-[#E5B869] to-[#C69234] hover:brightness-110 text-black font-bold rounded-full px-3 py-1.5 text-xs transition-all duration-150 shadow-md disabled:opacity-60"
+                className="flex items-center gap-1.5 bg-gradient-to-r from-[#E5B869] to-[#C69234] hover:brightness-110 text-black font-bold rounded-full px-2.5 sm:px-3 py-1.5 text-xs transition-all duration-150 shadow-md disabled:opacity-60"
               >
                 <RotateCcw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
-                <span>Back to Live</span>
+                <span className="hidden xs:inline">Back to Live</span>
+                <span className="xs:hidden">Live</span>
               </button>
             )}
           </div>
@@ -308,102 +276,6 @@ export default function WeatherStatusBar() {
           </div>
         </div>
       </div>
-
-      {/* ── Location Selector Modal ── */}
-      {showLocationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="bg-[#0B1525] border border-[#E5B869]/30 rounded-2xl p-5 sm:p-6 w-full max-w-md shadow-2xl space-y-5 relative">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-[#1E2D45] pb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/30 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-[#E5B869]" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-white">Set Your Exact Location</h3>
-                  <p className="text-[11px] text-gray-400">Live weather & atmosphere will adjust immediately</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => { setShowLocationModal(false); setLocationError(""); }}
-                className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleLocationSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[11px] font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">
-                  City, Village, or PIN Code
-                </label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                  <input
-                    type="text"
-                    value={locationInput}
-                    onChange={(e) => setLocationInput(e.target.value)}
-                    placeholder="e.g. Y N Hosakote, 572141, Pavagada..."
-                    autoFocus
-                    className="w-full bg-[#060C18] border border-[#1E2D45] rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-600 outline-none focus:border-[#E5B869] transition"
-                  />
-                </div>
-                {locationError && (
-                  <p className="text-xs text-red-400 mt-1.5">{locationError}</p>
-                )}
-              </div>
-
-              {/* Quick suggestions */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Quick Suggestions:</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {["Y N Hosakote", "572141", "Pavagada", "Tumakuru", "Bengaluru"].map((name) => (
-                    <button
-                      key={name}
-                      type="button"
-                      onClick={() => handleLocationSubmit(undefined, name)}
-                      className="px-2.5 py-1 rounded-lg text-xs bg-[#101827] border border-[#1E2D45] text-gray-300 hover:border-[#E5B869]/50 hover:text-[#E5B869] transition"
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    requestGpsLocation();
-                    setShowLocationModal(false);
-                  }}
-                  className="flex-1 py-2.5 rounded-xl border border-[#1E2D45] text-xs font-semibold text-gray-300 hover:text-white hover:border-gray-500 flex items-center justify-center gap-1.5 transition"
-                >
-                  <Navigation className="w-3.5 h-3.5 text-[#E5B869]" />
-                  Detect via GPS
-                </button>
-                <button
-                  type="submit"
-                  disabled={isLocSearching || !locationInput.trim()}
-                  className="flex-1 py-2.5 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-[#F5D075] via-[#E5B869] to-[#C69234] hover:brightness-110 disabled:opacity-50 transition flex items-center justify-center gap-1.5"
-                >
-                  {isLocSearching ? (
-                    <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      Set Location
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
