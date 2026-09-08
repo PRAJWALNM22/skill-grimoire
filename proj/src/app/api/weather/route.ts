@@ -27,7 +27,7 @@ export interface WeatherDataResponse {
 }
 
 // Map WMO Weather Codes to our dynamic themes
-function mapWmoToCondition(code: number, isDay: boolean, hour: number): {
+function mapWmoToCondition(code: number, isDay: boolean, hour: number, precipitation: number = 0): {
   condition: WeatherConditionType;
   conditionLabel: string;
   timeOfDay: "morning" | "afternoon" | "sunset" | "evening" | "night";
@@ -48,8 +48,8 @@ function mapWmoToCondition(code: number, isDay: boolean, hour: number): {
     };
   }
 
-  // Rain / Drizzle / Showers
-  if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) {
+  // Active / heavy rain only when precipitation is significant (>= 1.5mm) or heavy rain codes (63, 65, 82)
+  if ([63, 65, 82].includes(code) || ([51, 53, 55, 56, 57, 61, 66, 67, 80, 81].includes(code) && precipitation >= 1.5)) {
     return {
       condition: "rainy",
       conditionLabel: "Rain Showers",
@@ -57,7 +57,7 @@ function mapWmoToCondition(code: number, isDay: boolean, hour: number): {
     };
   }
 
-  // Fog / Haze — distinct dusty/gritty atmosphere
+  // Fog / Haze
   if ([45, 48].includes(code)) {
     return {
       condition: "hazy",
@@ -75,16 +75,19 @@ function mapWmoToCondition(code: number, isDay: boolean, hour: number): {
     };
   }
 
-  // Cloudy / Overcast
-  if ([2, 3].includes(code)) {
+  // Dense overcast
+  if (code === 3) {
+    if (timeOfDay === "sunset") return { condition: "sunset", conditionLabel: "Cloudy Sunset", timeOfDay };
+    if (!isDay || timeOfDay === "night" || timeOfDay === "evening") return { condition: "night", conditionLabel: "Overcast Night", timeOfDay };
     return {
       condition: "cloudy",
-      conditionLabel: code === 2 ? "Partly Cloudy" : "Overcast",
+      conditionLabel: "Overcast Sky",
       timeOfDay,
     };
   }
 
-  // Clear / Sunny (or Night Starry / Sunset depending on time)
+  // Partly Cloudy, Light Drizzle / Passing clouds, or Clear skies
+  // During daytime, strictly follow natural sunlight and time of day
   if (timeOfDay === "sunset") {
     return {
       condition: "sunset",
@@ -96,14 +99,23 @@ function mapWmoToCondition(code: number, isDay: boolean, hour: number): {
   if (!isDay || timeOfDay === "night" || timeOfDay === "evening") {
     return {
       condition: "night",
-      conditionLabel: "Starry Night",
+      conditionLabel: [2, 51, 53].includes(code) ? "Partly Cloudy Night" : "Starry Night",
+      timeOfDay,
+    };
+  }
+
+  // Daytime: morning or afternoon
+  if (code === 2 || [51, 53, 55, 61].includes(code)) {
+    return {
+      condition: "sunny",
+      conditionLabel: "Partly Sunny",
       timeOfDay,
     };
   }
 
   return {
     condition: "sunny",
-    conditionLabel: "Clear & Radiant",
+    conditionLabel: "Clear & Sunny",
     timeOfDay,
   };
 }
@@ -251,6 +263,7 @@ export async function GET(request: NextRequest) {
     const feelsLike = Math.round(current.apparent_temperature ?? temp);
     const humidity = Math.round(current.relative_humidity_2m ?? 60);
     const windSpeed = Math.round(current.wind_speed_10m ?? 12);
+    const precipitation = typeof current.precipitation === "number" ? current.precipitation : 0;
 
     // Parse local time from response using UTC offset to get correct local hour
     // Open-Meteo returns current.time as a unix timestamp when timeformat=unixtime
@@ -259,7 +272,7 @@ export async function GET(request: NextRequest) {
     const localTimestamp = currentUnixTime + utcOffsetSeconds;
     const localHour = Math.floor((localTimestamp % 86400) / 3600);
 
-    const mapped = mapWmoToCondition(wmoCode, isDay, localHour);
+    const mapped = mapWmoToCondition(wmoCode, isDay, localHour, precipitation);
 
     // Format display date and time
     const timeFormatter = new Intl.DateTimeFormat("en-US", {
@@ -300,21 +313,45 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (err) {
     console.error("Weather fetch fallback trigger:", err);
-    // Graceful fallback with atmospheric default
+    // Graceful fallback with atmospheric state strictly driven by actual local time of day
+    const now = new Date();
+    const currentHour = now.getHours() + now.getMinutes() / 60;
+    let timeOfDay: "morning" | "afternoon" | "sunset" | "evening" | "night" = "afternoon";
+    if (currentHour >= 5 && currentHour < 12) timeOfDay = "morning";
+    else if (currentHour >= 12 && currentHour < 17) timeOfDay = "afternoon";
+    else if (currentHour >= 17 && currentHour < 19) timeOfDay = "sunset";
+    else if (currentHour >= 19 && currentHour < 22) timeOfDay = "evening";
+    else timeOfDay = "night";
+
+    const isDay = currentHour >= 6 && currentHour < 18;
+    let condition: WeatherConditionType = "sunny";
+    let conditionLabel = "Partly Sunny";
+
+    if (timeOfDay === "sunset") {
+      condition = "sunset";
+      conditionLabel = "Golden Sunset";
+    } else if (!isDay || timeOfDay === "night" || timeOfDay === "evening") {
+      condition = "night";
+      conditionLabel = "Starry Night";
+    } else {
+      condition = "sunny";
+      conditionLabel = "Partly Sunny";
+    }
+
     const fallbackResponse: WeatherDataResponse = {
-      city: cityName,
-      country: countryName,
-      temp: 24,
-      feelsLike: 25,
-      condition: "thunderstorm",
-      conditionLabel: "Partly Cloudy",
-      wmoCode: 95,
-      isDay: false,
-      timeOfDay: "evening",
-      humidity: 65,
-      windSpeed: 14,
-      localTime: "7:25 PM",
-      formattedDate: "May 20, 2025",
+      city: cityName || "Your Location",
+      country: countryName || "India",
+      temp: 28,
+      feelsLike: 29,
+      condition,
+      conditionLabel,
+      wmoCode: 2,
+      isDay,
+      timeOfDay,
+      humidity: 50,
+      windSpeed: 10,
+      localTime: now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
+      formattedDate: now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       source: "fallback",
     };
     return NextResponse.json(fallbackResponse);
