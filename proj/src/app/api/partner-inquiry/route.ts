@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import nodemailer from "nodemailer";
+import { transporter, FROM_NAME, FROM_EMAIL } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -36,19 +36,8 @@ export async function POST(req: Request) {
       toEmail = "contact@skillgrimoire.com"; // Fallback
     }
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    });
-
-    const fromName = process.env.EMAIL_FROM_NAME || "Skill Grimoire";
     const mailOptions = {
-      from: `"${fromName}" <${process.env.GMAIL_USER}>`,
+      from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: toEmail,
       subject: `New Partnership Enquiry from ${institutionName} (${institutionType})`,
       text: `

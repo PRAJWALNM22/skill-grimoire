@@ -1,15 +1,38 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+// Support custom SMTP (e.g. GoDaddy Microsoft 365, GoDaddy Secureserver, Hostinger) with fallback to Gmail
+const isCustomSmtp = Boolean(process.env.SMTP_HOST);
 
-const FROM_NAME = process.env.EMAIL_FROM_NAME || "Skill Grimoire";
-const FROM_EMAIL = process.env.GMAIL_USER || "noreply@skillgrimoire.com";
+export const transporter = nodemailer.createTransport(
+  isCustomSmtp
+    ? {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT) || 587,
+        secure: process.env.SMTP_SECURE === "true" || process.env.SMTP_PORT === "465",
+        auth: {
+          user: process.env.SMTP_USER || process.env.GMAIL_USER,
+          pass: process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD,
+        },
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+        },
+      }
+    : {
+        service: "gmail",
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+      }
+);
+
+export const FROM_NAME = process.env.EMAIL_FROM_NAME || "Skill Grimoire";
+export const FROM_EMAIL =
+  process.env.SMTP_FROM ||
+  process.env.SMTP_USER ||
+  process.env.GMAIL_USER ||
+  "office@skillgrimoire.com";
 
 // ── Shared HTML builder ───────────────────────────────────────────────────────
 
