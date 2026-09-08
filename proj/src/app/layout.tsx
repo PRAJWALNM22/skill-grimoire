@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Outfit } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
+import AutoReloadOnIdle from "@/components/layout/AutoReloadOnIdle";
 
 const cinzel = Cinzel({
   variable: "--font-serif",
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cinzel.variable} ${outfit.variable} dark`}>
       <body className="min-h-screen bg-[#070B12] text-gray-100 font-sans antialiased selection:bg-[#E5B869] selection:text-black flex flex-col">
+        <AutoReloadOnIdle />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
       </body>
