@@ -27,6 +27,7 @@ interface AdminUser {
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/admins", label: "Admin Team", icon: Shield },
   { href: "/admin/students", label: "Students", icon: Users },
   { href: "/admin/courses", label: "Courses", icon: BookOpen },
   { href: "/admin/videos", label: "Videos", icon: Video },

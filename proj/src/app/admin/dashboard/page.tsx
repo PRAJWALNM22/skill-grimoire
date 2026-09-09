@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, BookOpen, Video, TrendingUp, Clock, AlertCircle, ArrowRight } from "lucide-react";
+import { Users, BookOpen, Video, TrendingUp, Clock, AlertCircle, ArrowRight, Shield } from "lucide-react";
 import Link from "next/link";
 
 interface Stats {
@@ -10,6 +10,7 @@ interface Stats {
   totalVideos: number;
   totalEnrollments: number;
   pendingPasswordChange: number;
+  totalAdmins?: number;
 }
 
 interface RecentStudent {
@@ -74,6 +75,15 @@ export default function AdminDashboard() {
       iconColor: "text-[#E5B869]",
       href: "/admin/students",
     },
+    {
+      label: "Admin Team",
+      value: stats?.totalAdmins ?? "—",
+      icon: Shield,
+      color: "from-rose-500/20 to-rose-600/10",
+      border: "border-rose-500/20",
+      iconColor: "text-rose-400",
+      href: "/admin/admins",
+    },
   ];
 
   return (
@@ -101,7 +111,7 @@ export default function AdminDashboard() {
       )}
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {statCards.map(({ label, value, icon: Icon, color, border, iconColor, href }) => (
           <Link
             key={label}

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     });
 
     // 2. Send Email
-    let toEmail = "sghelpdesk.edu@gmail.com"; // Fallback
+    let toEmail = "office@skillgrimoire.com"; // Fallback
     if (institutionType === "10th") {
       toEmail = "school@skillgrimoire.com";
     } else if (institutionType === "PU") {

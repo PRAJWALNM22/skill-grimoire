@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
       totalVideos,
       totalEnrollments,
       pendingPasswordChange,
+      totalAdmins,
       recentStudents,
     ] = await Promise.all([
       prisma.user.count({ where: { role: "STUDENT" } }),
@@ -23,6 +24,7 @@ export async function GET(request: NextRequest) {
       prisma.lesson.count(),
       prisma.enrollment.count(),
       prisma.user.count({ where: { role: "STUDENT", mustChangePassword: true } }),
+      prisma.user.count({ where: { role: "ADMIN" } }),
       prisma.user.findMany({
         where: { role: "STUDENT" },
         select: { id: true, name: true, email: true, createdAt: true, mustChangePassword: true },
@@ -39,6 +41,7 @@ export async function GET(request: NextRequest) {
         totalVideos,
         totalEnrollments,
         pendingPasswordChange,
+        totalAdmins,
       },
       recentStudents,
     });

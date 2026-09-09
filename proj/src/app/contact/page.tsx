@@ -9,7 +9,7 @@ import { Mail, ArrowRight, Check, Copy } from "lucide-react";
 
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
-  const supportEmail = "sghelpdesk.edu@gmail.com";
+  const supportEmail = "office@skillgrimoire.com";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(supportEmail);
@@ -49,7 +49,7 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              {/* ── Bottom Card: Support Desk Action (Featuring sghelpdesk.edu@gmail.com) ── */}
+              {/* ── Bottom Card: Support Desk Action (Featuring office@skillgrimoire.com) ── */}
               <div className="pro-card shimmer-on-hover w-full bg-[#0e1627]/15 backdrop-blur-md border border-[#E5B869]/30 rounded-[32px] sm:rounded-[40px] p-5 sm:p-8 md:p-10 shadow-[0_4px_20px_0_rgba(0,0,0,0.2)] flex flex-col md:flex-row items-stretch md:items-center gap-6 md:gap-8 justify-between relative overflow-hidden">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full md:w-auto min-w-0">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#E5B869]/15 border border-[#E5B869]/35 flex items-center justify-center shrink-0 shadow-[0_0_25px_rgba(229,184,105,0.25)]">
