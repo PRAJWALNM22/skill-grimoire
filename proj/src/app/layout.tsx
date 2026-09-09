@@ -23,9 +23,12 @@ export const metadata: Metadata = {
   description:
     "The all-in-one ecosystem to learn, teach and transform careers with the power of AI. Weather-infused adaptive educational platform.",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/images/logo_emblem.jpg" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/images/logo_emblem.jpg",
+    apple: "/images/logo_emblem.jpg",
   },
 };
 

@@ -22,6 +22,14 @@ export const allExperts: Expert[] = [
     tag: "Senior Faculty"
   },
   {
+    name: "Hayavadan G Nargund",
+    designation: "Senior Data Scientist & AI/ML Corporate Trainer",
+    exp: "17+ yrs",
+    location: "Bengaluru, India",
+    skills: ["Machine Learning", "Generative AI", "NLP & LLMs", "MLOps & RAG"],
+    tag: "Senior Data Scientist"
+  },
+  {
     name: "Prof. Dr. Lakshmi Sree",
     designation: "Professor & Academic Leader – AI & Research",
     exp: "15+ yrs",
@@ -54,20 +62,20 @@ export const allExperts: Expert[] = [
     tag: "GenAI Specialist"
   },
   {
-    name: "Apurva Lohumi",
-    designation: "Assistant Professor & Visual Media Researcher",
-    exp: "5+ yrs",
-    location: "Mohali, India",
-    skills: ["Visual Media", "Communication", "Interdisciplinary NEP"],
-    tag: "Media & Comms"
-  },
-  {
     name: "Shreya Shirwadkar",
     designation: "Senior Software Engineer & Technical Lead",
     exp: "6+ yrs",
     location: "Pune, India",
     skills: ["Full Stack", "Cloud Systems", "Enterprise Tech"],
     tag: "Senior Tech Lead"
+  },
+  {
+    name: "Apurva Lohumi",
+    designation: "Assistant Professor & Visual Media Researcher",
+    exp: "5+ yrs",
+    location: "Mohali, India",
+    skills: ["Visual Media", "Communication", "Interdisciplinary NEP"],
+    tag: "Media & Comms"
   },
   {
     name: "Vasu Bhasin",
@@ -259,9 +267,9 @@ export default function ExpertsCarousel() {
         </div>
       </div>
 
-      {/* Pagination Dot Indicator (3 Pages of 4 Experts each) */}
+      {/* Pagination Dot Indicator */}
       <div className="flex items-center justify-center gap-2.5 mt-6">
-        {[0, 1, 2].map((page) => (
+        {Array.from({ length: Math.ceil(allExperts.length / 4) }).map((_, page) => (
           <button
             key={page}
             onClick={() => {
